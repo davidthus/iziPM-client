@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 3 });
 
 /**
  * Create a base API to inject endpoints into elsewhere.
@@ -23,7 +23,7 @@ const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
  * and to ensure that the file injecting the endpoints is loaded
  */
 export const apiSlice = createApi({
-  reducerPath: "splitApi",
+  reducerPath: "api",
   baseQuery: baseQueryWithRetry,
   /*
    * Tag types must be defined in the original API definition
