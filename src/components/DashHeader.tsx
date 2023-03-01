@@ -1,9 +1,11 @@
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { selectUserInfo } from "../features/users/userApiSlice";
 import type { IMsgRes } from "../types/MsgRes";
 
 const DASH_REGEX = /^\/dash(\/)?$/;
@@ -33,7 +35,7 @@ function DashHeader(): JSX.Element {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-
+  const { data } = useSelector(selectUserInfo);
   const [sendLogout, { isLoading, isSuccess, isError, error }] =
     useSendLogoutMutation();
 
@@ -59,11 +61,11 @@ function DashHeader(): JSX.Element {
     <header>
       <div>
         <Link to="/dash">
-          <h1>iziPM</h1>
+          <h1>Welcome to iziPM</h1>
         </Link>
+        <p>{data?.user && data.user.username}</p>
         <nav>
           {/* add more buttons later */}
-
           {logoutButton}
         </nav>
         <div></div>

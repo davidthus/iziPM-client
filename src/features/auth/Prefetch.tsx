@@ -6,16 +6,12 @@ import { projectApiSlice } from "../projects/projectApiSlice";
 import { userApiSlice } from "../users/userApiSlice";
 
 const Prefetch = () => {
-  const { userId } = useAppSelector((state) => state.auth);
-
   useEffect(() => {
     console.log("subscribing");
     const projects = store.dispatch(
-      projectApiSlice.endpoints.getUserProjects.initiate(userId)
+      projectApiSlice.endpoints.getUserProjects.initiate()
     );
-    const users = store.dispatch(
-      userApiSlice.endpoints.getUser.initiate(userId)
-    );
+    const users = store.dispatch(userApiSlice.endpoints.getUser.initiate());
 
     return () => {
       console.log("unsubscribing");
