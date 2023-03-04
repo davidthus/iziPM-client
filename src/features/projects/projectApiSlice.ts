@@ -1,5 +1,5 @@
-import { IProject } from "@/types/project";
 import { apiSlice } from "../../app/api/apiSlice";
+import { IProject } from "../../types/project";
 
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,5 +13,8 @@ export const projectApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+export const selectUserProjects =
+  projectApiSlice.endpoints.getUserProjects.select();
 
 export const { useGetUserProjectsQuery } = projectApiSlice;

@@ -1,9 +1,8 @@
-import jwt_decode from "jwt-decode";
 import { useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import getTokenPayload from "../../util/getTokenPayload";
 import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
 
@@ -11,10 +10,6 @@ type FormData = {
   email: string;
   password: string;
 };
-
-interface ItokenPayload {
-  userId: string;
-}
 
 function Login() {
   const navigate = useNavigate();
@@ -30,8 +25,7 @@ function Login() {
   const onSubmit = async ({ email, password }: FormData) => {
     try {
       const { accessToken } = await login({ email, password }).unwrap();
-      const decoded: ItokenPayload = jwt_decode(accessToken);
-      dispatch(setCredentials({ accessToken, userId: decoded.userId }));
+      dispatch(setCredentials(getTokenPayload(accessToken)));
       navigate("/dash");
     } catch (err: any) {
       if (!err.status) {

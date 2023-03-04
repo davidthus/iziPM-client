@@ -1,7 +1,6 @@
-import { Iuser } from "@/types/user";
-import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 import type { IMsgRes } from "../../types/MsgRes";
+import { Iuser } from "../../types/user";
 
 interface InewUserInfo {
   userId: string;

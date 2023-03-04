@@ -4,8 +4,8 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import jwt_decode from "jwt-decode";
 import { setCredentials } from "../../features/auth/authSlice";
+import getTokenPayload from "../../util/getTokenPayload";
 import { RootState } from "../store";
 
 // Create our baseQuery instance
@@ -42,15 +42,8 @@ const baseQueryWithReauth = async (
 
     if (refreshResult?.data) {
       let typedRefreshResult = refreshResult.data as { accessToken: string };
-      // store the new token
-      const decoded: { userId: string } = jwt_decode(
-        typedRefreshResult.accessToken
-      );
       api.dispatch(
-        setCredentials({
-          accessToken: typedRefreshResult.accessToken,
-          userId: decoded.userId,
-        })
+        setCredentials(getTokenPayload(typedRefreshResult.accessToken))
       );
 
       // retry original query with new access token

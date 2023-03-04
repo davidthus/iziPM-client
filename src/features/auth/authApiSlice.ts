@@ -1,5 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { logOut } from "./authSlice";
+import getTokenPayload from "../../util/getTokenPayload";
+import { logOut, setCredentials } from "./authSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,11 +33,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    refresh: builder.mutation({
+    refresh: builder.mutation<{ accessToken: string }, void>({
       query: () => ({
         url: "/auth/refresh",
         method: "GET",
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(setCredentials(getTokenPayload(data.accessToken)));
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
   }),
 });
