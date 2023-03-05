@@ -1,4 +1,6 @@
-export interface Iuser {
+import { IProject } from "./project";
+
+export interface IUser {
   _id: string;
   username: string;
   email: string;
@@ -8,5 +10,5 @@ export interface Iuser {
     data: Buffer;
     contentType: string;
   };
-  projects: string[];
+  projects: IProject[];
 }

@@ -1,12 +1,15 @@
+import { IUser } from "./user";
+
 export interface IProject {
   name: string;
-  members: string[];
+  owner: IUser;
+  projectManagers: IUser[];
+  members: IUser[];
   projectCharter: string;
   completedPercent: number;
   startDate: Date;
   endDate?: Date;
   _id: string;
-  pms: string[];
   tasks: ITask[];
   groupChat: IMessage[];
 }
