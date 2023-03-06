@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { selectCurrentToken } from "../features/auth/authSlice";
 import { selectUserProjects } from "../features/projects/projectApiSlice";
 import getTokenPayload from "../util/getTokenPayload";
@@ -17,9 +18,10 @@ type returnValues =
   | userRoles.owner
   | false;
 
-export default function useAuth(projectId: string): returnValues {
+export default function useAuth(): returnValues {
   const accessToken = useSelector(selectCurrentToken);
   const { data } = useSelector(selectUserProjects);
+  const { projectId } = useParams();
   const { userId } = getTokenPayload(accessToken);
 
   let status: returnValues = false;
