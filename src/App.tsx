@@ -43,11 +43,29 @@ function App() {
               >
                 <Route path="projects/:projectId">
                   <Route index element={<Project />} />
-                  <Route path="settings" element={<ProjectSettings />} />
+
+                  <Route
+                    path="settings"
+                    element={<RequireAuth allowedRoles={[userRoles.owner]} />}
+                  >
+                    <Route index element={<ProjectSettings />} />
+                  </Route>
 
                   <Route path="task/:taskId">
                     <Route index element={<Task />} />
-                    <Route path="settings" element={<TaskSettings />} />
+                    <Route
+                      path="settings"
+                      element={
+                        <RequireAuth
+                          allowedRoles={[
+                            userRoles.projectManager,
+                            userRoles.owner,
+                          ]}
+                        />
+                      }
+                    >
+                      <Route index element={<TaskSettings />} />
+                    </Route>
                   </Route>
                 </Route>
               </Route>

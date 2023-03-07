@@ -1,5 +1,5 @@
-import type { RootState } from "@/app/store";
 import { createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 
 const authSlice = createSlice({
   name: "auth",
