@@ -12,7 +12,7 @@ const Prefetch = () => {
       })
     );
     store.dispatch(
-      userApiSlice.util.prefetch("getUser", undefined, { force: true })
+      userApiSlice.util.prefetch("getUser", "user", { force: true })
     );
   }, []);
   return <Outlet />;

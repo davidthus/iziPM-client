@@ -1,6 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
 import type { IMsgRes } from "../../types/MsgRes";
-import { Iuser } from "../../types/user";
+import { IUser } from "../../types/user";
 
 interface InewUserInfo {
   userId: string;
@@ -15,7 +15,7 @@ interface InewUserInfo {
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUser: builder.query<{ user: Iuser }, void>({
+    getUser: builder.query<{ user: IUser }, string>({
       query: () => ({
         url: `/users`,
         validateStatus: (response, result) => {
@@ -33,6 +33,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const selectUserInfo = userApiSlice.endpoints.getUser.select();
+export const selectUserInfo = userApiSlice.endpoints.getUser.select("user");
 
 export const { useGetUserQuery, useUpdateUserMutation } = userApiSlice;
