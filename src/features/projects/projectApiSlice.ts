@@ -3,7 +3,7 @@ import { IProject } from "../../types/project";
 
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUserProjects: builder.query<{ projects: IProject[] }, void>({
+    getUserProjects: builder.query<{ projects: IProject[] }, string>({
       query: () => ({
         url: `/users/projects`,
         validateStatus: (response, result) => {
@@ -15,6 +15,6 @@ export const projectApiSlice = apiSlice.injectEndpoints({
 });
 
 export const selectUserProjects =
-  projectApiSlice.endpoints.getUserProjects.select();
+  projectApiSlice.endpoints.getUserProjects.select("projects");
 
 export const { useGetUserProjectsQuery } = projectApiSlice;

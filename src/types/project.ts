@@ -18,8 +18,9 @@ export interface ITask {
   name: string;
   description: string;
   subtasks: ISubtask[];
+  projectId: string;
   dueDate: Date;
-  assignedTo: string[];
+  assignedTo: IUser[];
   _id: string;
   dependencies: string[];
 }
