@@ -26,8 +26,11 @@ function Welcome() {
         <h2>Projects</h2>
         {isLoading ? (
           <div>Loading...</div>
-        ) : (
+        ) : typeof projects?.projects !== "undefined" &&
+          projects?.projects.length >= 1 ? (
           projects?.projects.map((project) => <ProjectCard project={project} />)
+        ) : (
+          <p>You have no projects.</p>
         )}
       </section>
       <section>

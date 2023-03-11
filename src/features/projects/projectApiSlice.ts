@@ -1,6 +1,11 @@
 import { apiSlice } from "../../app/api/apiSlice";
 import { IProject } from "../../types/project";
 
+interface INewProject {
+  userId: string;
+  projectName: string;
+}
+
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserProjects: builder.query<{ projects: IProject[] }, string>({
@@ -9,6 +14,13 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         validateStatus: (response, result) => {
           return response.status === 200 && !result.isError;
         },
+      }),
+    }),
+    createProject: builder.mutation<{ projects: IProject[] }, INewProject>({
+      query: (newProject) => ({
+        url: `/projects`,
+        method: "POST",
+        body: { ...newProject },
       }),
     }),
   }),
