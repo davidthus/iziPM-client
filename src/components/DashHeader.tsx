@@ -1,10 +1,12 @@
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { useCreateProjectMutation } from "../features/projects/projectApiSlice";
 import { selectUserInfo } from "../features/users/userApiSlice";
 import type { IMsgRes } from "../types/MsgRes";
 
@@ -31,29 +33,94 @@ const Avatar = styled.img`
   vertical-align: middle;
 `;
 
+type FormData = {
+  projectName: string;
+};
+
 function DashHeader(): JSX.Element {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { data } = useSelector(selectUserInfo);
-  const [sendLogout, { isLoading, isSuccess, isError, error }] =
-    useSendLogoutMutation();
+  const [isNewProjectInputOpen, setIsNewProjectOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [
+    sendLogout,
+    {
+      isLoading: isLogoutLoading,
+      isSuccess: isLogoutSuccess,
+      isError: isLogoutError,
+      error: logoutError,
+    },
+  ] = useSendLogoutMutation();
+  const [
+    createProject,
+    {
+      isSuccess: isCreateProjectSuccess,
+      isError: isCreateProjectError,
+      error: createProjectError,
+    },
+  ] = useCreateProjectMutation();
+
+  const onSubmit = async ({ projectName }: FormData) => {
+    if (typeof data?.user._id !== "undefined") {
+      const createProjectResponse = await createProject({
+        projectName,
+        userId: data?.user._id,
+      });
+      if (isCreateProjectSuccess) {
+        const { data } = createProjectResponse as {
+          data: { message: string; projectId: string };
+        };
+        navigate(`/dash/projects/${data.projectId}`);
+      } else if (isCreateProjectError) {
+        console.log(createProjectError);
+      }
+    }
+  };
 
   useEffect(() => {
-    if (isSuccess) navigate("/");
-  }, [isSuccess, navigate]);
+    if (isLogoutSuccess) navigate("/");
+  }, [isLogoutSuccess, navigate]);
 
-  if (isLoading) return <p>Logging Out...</p>;
+  if (isLogoutLoading) return <p>Logging Out...</p>;
 
-  let err = error as IMsgRes;
+  let err = logoutError as IMsgRes;
 
-  if (isError && err) {
+  if (isLogoutError && err) {
     return <p>Error: {err?.data?.message}</p>;
   }
 
   const logoutButton = (
     <button title="Logout" onClick={sendLogout}>
       <FontAwesomeIcon icon={faRightFromBracket} />
+    </button>
+  );
+
+  const createProjectButton = (
+    <button
+      title="Create Project"
+      onClick={(e) => setIsNewProjectOpen((prev) => !prev)}
+    >
+      <p>Create Project</p>
+      {isNewProjectInputOpen && (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            onClick={(e) => e.stopPropagation()}
+            {...register("projectName", {
+              required: true,
+              minLength: 5,
+              maxLength: 30,
+            })}
+          />
+          {typeof errors?.projectName !== "undefined" && (
+            <p>{errors.projectName?.message}</p>
+          )}
+        </form>
+      )}
     </button>
   );
 
@@ -66,6 +133,7 @@ function DashHeader(): JSX.Element {
         <p>{data?.user && data.user.username}</p>
         <nav>
           {/* add more buttons later */}
+          {createProjectButton}
           {logoutButton}
         </nav>
         <div></div>

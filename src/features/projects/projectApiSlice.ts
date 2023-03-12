@@ -16,7 +16,10 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    createProject: builder.mutation<{ projects: IProject[] }, INewProject>({
+    createProject: builder.mutation<
+      { message: string; projectId: string },
+      INewProject
+    >({
       query: (newProject) => ({
         url: `/projects`,
         method: "POST",
@@ -29,4 +32,5 @@ export const projectApiSlice = apiSlice.injectEndpoints({
 export const selectUserProjects =
   projectApiSlice.endpoints.getUserProjects.select("projects");
 
-export const { useGetUserProjectsQuery } = projectApiSlice;
+export const { useGetUserProjectsQuery, useCreateProjectMutation } =
+  projectApiSlice;

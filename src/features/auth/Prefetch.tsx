@@ -7,7 +7,7 @@ import { userApiSlice } from "../users/userApiSlice";
 const Prefetch = () => {
   useEffect(() => {
     store.dispatch(
-      projectApiSlice.util.prefetch("getUserProjects", undefined, {
+      projectApiSlice.util.prefetch("getUserProjects", "project", {
         force: true,
       })
     );
