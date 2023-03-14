@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { IProject } from "../types/project";
 
 interface ProjectCardProps {
@@ -6,10 +7,10 @@ interface ProjectCardProps {
 
 function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div>
+    <Link to={`/dash/projects/${project._id}`}>
       <h4>{project.name}</h4>
       <p>{project.members.length} Members</p>
-    </div>
+    </Link>
   );
 }
 
