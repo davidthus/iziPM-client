@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import usePersist from "../../hooks/usePersist";
 import getTokenPayload from "../../util/getTokenPayload";
 import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
@@ -16,6 +17,7 @@ function Login() {
   const dispatch = useDispatch();
   const [errMsg, setErrMsg] = useState("");
   const [login, { isLoading }] = useLoginMutation();
+  const [persist, setPersist] = usePersist();
   const {
     register,
     handleSubmit,
@@ -72,6 +74,15 @@ function Login() {
             })}
           />
           <button type="submit">Login</button>
+          {/* <label htmlFor="persist">
+            <input
+              type="checkbox"
+              id="persist"
+              onChange={handleToggle}
+              checked={persist}
+            />
+            Trust This Device
+          </label> */}
         </form>
       </main>
       <footer>
