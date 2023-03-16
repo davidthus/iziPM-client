@@ -3,13 +3,7 @@ import TodoList from "../../components/TodoList";
 import { useGetUserProjectsQuery } from "../projects/projectApiSlice";
 
 function Welcome() {
-  const {
-    data: projects,
-    isError,
-    isSuccess,
-    isLoading,
-    error,
-  } = useGetUserProjectsQuery("projects", {
+  const { data: projects, isLoading } = useGetUserProjectsQuery("projects", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,

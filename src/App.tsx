@@ -29,7 +29,7 @@ function App() {
           <Route element={<Prefetch />}>
             <Route path="dash" element={<DashLayout />}>
               <Route index element={<Welcome />} />
-              <Route path="/settings" element={<UserSettings />} />
+              <Route path="settings" element={<UserSettings />} />
 
               {/* project routes */}
               <Route
